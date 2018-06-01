@@ -1,6 +1,6 @@
 # FBOXLIB_HOME defines the directory in which we will find all the BoxLib code
 # If you set FBOXLIB_HOME as an environment variable, this line will be ignored
-FBOXLIB_HOME ?= ../../..
+FBOXLIB_HOME ?= ../../../..
 
 NDEBUG    := t
 MPI       := t
