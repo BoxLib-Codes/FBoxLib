@@ -19,9 +19,9 @@ module mg_module
 
 contains
 
-  integer function amrex_f90mg_get_niters () bind(c,name='amrex_f90mg_get_niters')
-    amrex_f90mg_get_niters = n_mg_iters
-  end function amrex_f90mg_get_niters
+  integer function bl_f90mg_get_niters () bind(c,name='bl_f90mg_get_niters')
+    bl_f90mg_get_niters = n_mg_iters
+  end function bl_f90mg_get_niters
 
   recursive subroutine mg_tower_build(mgt, la, pd, domain_bc, stencil_type, &
                                       nu1, nu2, nuf, nub, cycle_type, &
