@@ -1,0 +1,26 @@
+nohup.out
+*.[oa]
+*.ex
+*.exe
+*~
+
+d/
+f/
+o/
+t/
+TAGS
+
+# latex
+*.aux
+*.log
+*.bbl
+*.toc
+*.dvi
+*-eps-converted-to.pdf
+
+# python
+*.pyc
+
+.DS_Store
+
+.nfs*
