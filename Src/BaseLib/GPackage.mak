@@ -7,8 +7,6 @@ f90sources += bl_constants.f90
 f90sources += bl_IO.f90
 ifdef PROF
   f90sources += bl_prof.f90
-  f90sources += amrex_timer_c.f90
-  csources += timer_c.c
 else
   f90sources += bl_prof_stubs.f90
 endif
@@ -20,7 +18,7 @@ f90sources += bl_stream.f90
 f90sources += bl_string.f90
 f90sources += bl_system.f90
 f90sources += bl_timer.f90
-f90sources += amrex_timer_c.f90
+f90sources += bl_timer_c.f90
 f90sources += bl_types.f90
 
 f90sources += box_f.f90
@@ -31,7 +29,7 @@ f90sources += box_util.f90
 f90sources += fab.f90
 f90sources += multifab_f.f90
 f90sources += fabio.f90
-f90sources += amrex_fabio_c.f90
+f90sources += bl_fabio_c.f90
 f90sources += plotfile.f90
 f90sources += filler.f90
 f90sources += cluster_f.f90
@@ -82,9 +80,6 @@ ifndef MPI
   f90sources += parallel_stubs.f90
 else
   f90sources += parallel.f90
-  ifeq ($(ARCH),Darwin)
-#    include $(FPARALLEL)/extern/MacMPI/GPackage.mak
-  endif
 endif
 
 ifdef OMP
@@ -98,12 +93,6 @@ csources += timer_c.c
 csources += ppm_util_c.c
 csources += system_util_c.c
 
-ifeq ($(ARCH),AIX)
-endif
-
-ifeq ($(ARCH),OSF1)
-endif
-
 ifdef RANDOM
   f90sources += mt19937ar.f90
 endif
@@ -111,15 +100,17 @@ endif
 f90sources += backtrace_f.f90
 cxxsources += backtrace_c.cpp
 
-ifdef CXX11
-  f90sources += bl_random_f.f90
-  cxxsources += bl_random_c.cpp
-  INCLUDE_LOCATIONS += $(AMREX_HOME)/Src/F_BaseLib
-endif
+f90sources += bl_random_f.f90
+cxxsources += bl_random_c.cpp
 
-f90sources += amrex_fort_mod.f90
+f90sources += bl_fort_mod.f90
 
-include $(AMREX_HOME)/Src/Base/GPackage.mak
-VPATH_LOCATIONS += $(AMREX_HOME)/Src/Base
-INCLUDE_LOCATIONS += $(AMREX_HOME)/Src/Base
+cxxsources += BL_MemPool.cpp
+cxxsources += BL_CArena.cpp
+cxxsources += BL_Arena.cpp
+
+f90sources += bl_mempool_f.f90
+
+VPATH_LOCATIONS += $(FBOXLIB_HOME)/Src/BaseLib
+INCLUDE_LOCATIONS += $(FBOXLIB_HOME)/Src/BaseLib
 
