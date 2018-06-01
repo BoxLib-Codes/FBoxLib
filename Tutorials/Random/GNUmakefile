@@ -1,4 +1,4 @@
-AMREX_HOME := ../..
+FBOXLIB_HOME := ../..
 
 NDEBUG :=
 MPI    :=
@@ -10,7 +10,7 @@ COMP := gfortran
 
 MKVERBOSE := t
 
-include $(AMREX_HOME)/Tools/F_mk/GMakedefs.mak
+include $(FBOXLIB_HOME)/Tools/F_mk/GMakedefs.mak
 
 include ./GPackage.mak
 VPATH_LOCATIONS += .
@@ -22,7 +22,7 @@ ALL: main.$(suf).exe
 
 #-----------------------------------------------------------------------------
 # core BoxLib directories
-BOXLIB_CORE := Src/F_BaseLib
+BOXLIB_CORE := Src/BaseLib
 
 #-----------------------------------------------------------------------------
 # Fmpack is the list of all the GPackage.mak files that we need to
@@ -37,8 +37,8 @@ BOXLIB_CORE := Src/F_BaseLib
 # we need to tell the compiler about.
 
 # BoxLib
-Fmpack += $(foreach dir, $(BOXLIB_CORE), $(AMREX_HOME)/$(dir)/GPackage.mak)
-Fmlocs += $(foreach dir, $(BOXLIB_CORE), $(AMREX_HOME)/$(dir))
+Fmpack += $(foreach dir, $(BOXLIB_CORE), $(FBOXLIB_HOME)/$(dir)/GPackage.mak)
+Fmlocs += $(foreach dir, $(BOXLIB_CORE), $(FBOXLIB_HOME)/$(dir))
 
 # include the necessary GPackage.mak files that define this setup
 include $(Fmpack)
@@ -68,7 +68,7 @@ endif
 
 #-----------------------------------------------------------------------------
 # include the BoxLib Fortran Makefile rules
-include $(AMREX_HOME)/Tools/F_mk/GMakerules.mak
+include $(FBOXLIB_HOME)/Tools/F_mk/GMakerules.mak
 
 #-----------------------------------------------------------------------------
 # for debugging.  To see the value of a Makefile variable,
