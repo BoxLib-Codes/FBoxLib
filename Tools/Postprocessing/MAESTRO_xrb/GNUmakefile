@@ -1,3 +1,5 @@
+FBOXLIB_HOME ?= ../../..
+
 NDEBUG := t
 MPI    :=
 OMP    :=
@@ -12,10 +14,10 @@ NEED_EOS_NETWORK := t
 MAESTRO_TOP_DIR := $(MAESTRO_HOME)
 
 # include the main Makefile stuff
-include $(AMREX_HOME)/Tools/F_mk/GMakedefs.mak
+include $(FBOXLIB_HOME)/Tools/F_mk/GMakedefs.mak
 
 # core BoxLib directories
-BOXLIB_CORE := Src/F_BaseLib
+BOXLIB_CORE := Src/BaseLib
 
 # other packages needed for data_processing
 Fmdirs := 
@@ -63,8 +65,8 @@ Fmpack := $(foreach dir, $(Fmdirs), $(MAESTRO_TOP_DIR)/$(dir)/GPackage.mak)
 Fmlocs := $(foreach dir, $(Fmdirs), $(MAESTRO_TOP_DIR)/$(dir))
 
 # BoxLib stuff
-Fmpack += $(foreach dir, $(BOXLIB_CORE), $(AMREX_HOME)/$(dir)/GPackage.mak)
-Fmlocs += $(foreach dir, $(BOXLIB_CORE), $(AMREX_HOME)/$(dir))
+Fmpack += $(foreach dir, $(BOXLIB_CORE), $(FBOXLIB_HOME)/$(dir)/GPackage.mak)
+Fmlocs += $(foreach dir, $(BOXLIB_CORE), $(FBOXLIB_HOME)/$(dir))
 
 # Microphysics
 Fmpack += $(foreach dir, $(MICROPHYS_CORE), $(dir)/GPackage.mak)
@@ -95,18 +97,18 @@ all: $(pnames)
 # probin stuff
 PROBIN_PARAMETER_DIRS :=
 EXTERN_PARAMETER_DIRS += $(MICROPHYS_CORE)
-EXTERN_PARAMETERS := $(shell $(AMREX_HOME)/Tools/F_scripts/findparams.py $(EXTERN_PARAMETER_DIRS))
+EXTERN_PARAMETERS := $(shell $(FBOXLIB_HOME)/Tools/F_scripts/findparams.py $(EXTERN_PARAMETER_DIRS))
 
 PROBIN_TEMPLATE := $(MAESTRO_TOP_DIR)/Util/parameters/dummy.probin.template
 
 probin.f90: $(PROBIN_PARAMETERS) $(EXTERN_PARAMETERS) $(PROBIN_TEMPLATE)
 	@echo " "
-	$(AMREX_HOME)/Tools/F_scripts/write_probin.py \
+	$(FBOXLIB_HOME)/Tools/F_scripts/write_probin.py \
            -t $(PROBIN_TEMPLATE) -o probin.f90 -n probin \
            --pa "$(PROBIN_PARAMETERS)" --pb "$(EXTERN_PARAMETERS)"
 
 
-include $(AMREX_HOME)/Tools/F_mk/GMakerules.mak
+include $(FBOXLIB_HOME)/Tools/F_mk/GMakerules.mak
 
 
 %.$(suf).exe:%.f90 $(objects)
