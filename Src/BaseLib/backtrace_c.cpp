@@ -19,12 +19,6 @@
 #include <omp.h>
 #endif
 
-#ifndef AMREX_FORTRAN_BOXLIB
-#include <AMReX.H>
-#include <AMReX_ParallelDescriptor.H>
-#include <AMReX_BLBackTrace.H>
-#endif
-
 extern "C" {
     extern void abort_fortranboxlib ();
 }
@@ -96,7 +90,6 @@ namespace
 
 extern "C"
 {
-#ifdef AMREX_FORTRAN_BOXLIB
     void backtrace_handler (int s)
     {
 	switch (s) {
@@ -131,16 +124,6 @@ extern "C"
 	
 	abort_fortranboxlib();
     }
-#else
-    void backtrace_handler (int s)
-    { 
-        if (amrex::system::signal_handling) {
-            amrex::BLBackTrace::handler(s); 
-        } else {
-            amrex::ParallelDescriptor::Abort();
-        }
-    }
-#endif
 
     void set_signal_handler (const char* ename, int rank)
     {

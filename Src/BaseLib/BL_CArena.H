@@ -5,9 +5,9 @@
 #include <set>
 #include <vector>
 
-#include <AMReX_Arena.H>
+#include <BL_Arena.H>
 
-namespace amrex {
+namespace bl {
 
 /**
 * \brief A Concrete Class for Dynamic Memory Management

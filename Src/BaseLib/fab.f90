@@ -4,7 +4,7 @@ module fab_module
   use bl_types
   use bl_mem_stat_module
   use box_module
-  use amrex_fabio_c_module
+  use bl_fabio_c_module
 
   implicit none
 
@@ -814,11 +814,11 @@ contains
   subroutine fab_build(fb, bx, nc, ng, nodal, alloc, stencil)
     use iso_c_binding, only : c_loc, c_ptr, c_size_t
     interface
-       subroutine amrex_real_array_init (p, n) bind(c)
+       subroutine bl_real_array_init (p, n) bind(c)
          use, intrinsic :: iso_c_binding
          type(c_ptr), value :: p
          integer(kind=c_size_t), intent(in), value :: n
-       end subroutine amrex_real_array_init
+       end subroutine bl_real_array_init
     end interface
     type(fab), intent(out) :: fb
     type(box), intent(in)  :: bx
@@ -860,7 +860,7 @@ contains
              cp = c_loc(fb%p(lo(1),lo(2),lo(3),1))
           end if
           csz = size(fb%p)
-          call amrex_real_array_init(cp, csz)
+          call bl_real_array_init(cp, csz)
        end if
        call mem_stats_alloc(fab_ms, volume(fb, all=.TRUE.))
        if ( (fab_ms%num_alloc-fab_ms%num_dealloc) > fab_high_water_mark ) then

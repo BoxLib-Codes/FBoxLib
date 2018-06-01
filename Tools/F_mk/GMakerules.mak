@@ -1,4 +1,4 @@
--include $(AMREX_HOME)/Tools/F_mk/Make.local
+-include $(FBOXLIB_HOME)/Tools/F_mk/Make.local
 
 vpath %.f   . $(VPATH_LOCATIONS)
 vpath %.c   . $(VPATH_LOCATIONS)
@@ -39,9 +39,6 @@ endif
 endif
 
 
-doc:	$(html_sources)
-	mv *.html $(hdir)
-
 clean::
 	$(RM) ./*.o ./*.mod $(mdir)/*.mod $(odir)/*.o *.$(suf).exe *~
 	$(RM) ./*.optrpt $(odir)/*.optrpt
@@ -55,7 +52,7 @@ realclean:: clean
 	$(RM) *.exe
 
 file_locations:
-	$(AMREX_HOME)/Tools/F_scripts/find_files_vpath.py --vpath "$(VPATH_LOCATIONS)" --files "$(sources)"
+	$(FBOXLIB_HOME)/Tools/F_scripts/find_files_vpath.py --vpath "$(VPATH_LOCATIONS)" --files "$(sources)"
 
 TAGS:	$(sources)
 	ctags -e --verbose=yes --fortran-kinds=+i $(abspath $^)
@@ -115,18 +112,6 @@ else
 	@echo "Building $< ..."
 	@$(COMPILE.cc) $(OUTPUT_OPTION) $<
 endif
-
-${hdir}/%.html: %.f90
-	@if [ ! -d $(hdir) ]; then mkdir -p $(hdir); fi
-	$(F90DOC) $(F90DOC_OPTION) $<
-
-${hdir}/%.html: %.F90
-	@if [ ! -d $(hdir) ]; then mkdir -p $(hdir); fi
-	$(F90DOC) $(F90DOC_OPTION) $<
-
-${hdir}/%.html: %.f
-	@if [ ! -d $(hdir) ]; then mkdir -p $(hdir); fi
-	$(F90DOC) $(F90DOC_OPTION) $<
 
 # determine the build dependencies among the source files.  At the moment,
 # we do not preprocess the Fortran files before doing the dependency check.

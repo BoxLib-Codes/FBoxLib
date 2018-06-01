@@ -288,7 +288,7 @@ contains
   end function parallel_q
 
   subroutine parallel_abort(str)
-    use amrex_timer_c_module, only: sys_abort
+    use bl_timer_c_module, only: sys_abort
     character(len=*), optional :: str
     if ( present(str) ) then
        print*, 'parallel_abort(): ', str
@@ -354,12 +354,12 @@ contains
     r = m_thread_support_level
   end function parallel_thread_support_level
   function parallel_wtime() result(r)
-    use amrex_timer_c_module, only: wall_second
+    use bl_timer_c_module, only: wall_second
     real(kind=dp_t) :: r
     call wall_second(r)
   end function parallel_wtime
   function parallel_wtick() result(r)
-    use amrex_timer_c_module, only: wall_second_tick
+    use bl_timer_c_module, only: wall_second_tick
     real(kind=dp_t) :: r
     call wall_second_tick(r)
   end function parallel_wtick

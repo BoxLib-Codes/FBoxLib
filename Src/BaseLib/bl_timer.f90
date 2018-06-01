@@ -2,7 +2,7 @@
 module bl_timer_module
 
   use bl_types
-  use amrex_timer_c_module, only: cpu_second, cpu_second_tick, wall_second, wall_second_tick
+  use bl_timer_c_module, only: cpu_second, cpu_second_tick, wall_second, wall_second_tick
 
   implicit none
 

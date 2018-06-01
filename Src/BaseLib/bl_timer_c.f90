@@ -1,4 +1,4 @@
-module amrex_timer_c_module
+module bl_timer_c_module
 
   implicit none
 
@@ -29,4 +29,4 @@ module amrex_timer_c_module
 
   end interface
 
-end module amrex_timer_c_module
+end module bl_timer_c_module

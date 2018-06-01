@@ -8,7 +8,7 @@ module fabio_module
   use multifab_module
   use ml_boxarray_module
   use ml_multifab_module
-  use amrex_fabio_c_module
+  use bl_fabio_c_module
   use iso_c_binding
 
   implicit none

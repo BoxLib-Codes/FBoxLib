@@ -9,25 +9,17 @@
 #include <memory>
 #include <cstring>
 #include <cstdint>
+#include <vector>
 
-#include <AMReX_CArena.H>
-#include <AMReX_MemPool.H>
-#include <AMReX_Vector.H>
+#include <BL_CArena.H>
+#include <BL_MemPool.H>
 
-#ifdef BL_MEM_PROFILING
-#include <AMReX_MemProfiler.H>
-#endif
-
-#ifndef AMREX_FORTRAN_BOXLIB
-#include <AMReX_ParmParse.H>
-#endif
-
-using namespace amrex;
+using namespace bl;
 
 namespace
 {
-    static Vector<std::unique_ptr<CArena> > the_memory_pool;
-#if defined(AMREX_TESTING) || defined(AMREX_DEBUG)
+    static std::vector<std::unique_ptr<CArena> > the_memory_pool;
+#if defined(BL_TESTING) || defined(DEBUG)
     static int init_snan = 1;
 #else
     static int init_snan = 0;
@@ -37,16 +29,11 @@ namespace
 
 extern "C" {
 
-void amrex_mempool_init ()
+void bl_mempool_init ()
 {
     if (!initialized)
     {
 	initialized = true;
-
-#ifndef AMREX_FORTRAN_BOXLIB
-        ParmParse pp("fab");
-	pp.query("init_snan", init_snan);
-#endif
 
 #ifdef _OPENMP
 	int nthreads = omp_get_max_threads();
@@ -62,30 +49,20 @@ void amrex_mempool_init ()
 #endif
 	{
 	    size_t N = 1024*1024*sizeof(double);
-	    void *p = amrex_mempool_alloc(N);
+	    void *p = bl_mempool_alloc(N);
 	    memset(p, 0, N);
-	    amrex_mempool_free(p);
+	    bl_mempool_free(p);
 	}
-
-#ifdef BL_MEM_PROFILING
-	MemProfiler::add("MemPool", std::function<MemProfiler::MemInfo()>
-			 ([] () -> MemProfiler::MemInfo {
-			     int MB_min, MB_max, MB_tot;
-			     amrex_mempool_get_stats(MB_min, MB_max, MB_tot);
-			     long b = MB_tot * (1024L*1024L);
-			     return {b, b};
-			 }));
-#endif
     }
 }
 
-void amrex_mempool_finalize ()
+void bl_mempool_finalize ()
 {
     initialized = false;
     the_memory_pool.clear();
 }
 
-void* amrex_mempool_alloc (size_t nbytes)
+void* bl_mempool_alloc (size_t nbytes)
 {
 #ifdef _OPENMP
   int tid = omp_get_thread_num();
@@ -95,7 +72,7 @@ void* amrex_mempool_alloc (size_t nbytes)
   return the_memory_pool[tid]->alloc(nbytes);
 }
 
-void amrex_mempool_free (void* p) 
+void bl_mempool_free (void* p) 
 {
 #ifdef _OPENMP
   int tid = omp_get_thread_num();
@@ -105,7 +82,7 @@ void amrex_mempool_free (void* p)
   the_memory_pool[tid]->free(p);
 }
 
-void amrex_mempool_get_stats (int& mp_min, int& mp_max, int& mp_tot) // min, max & tot in MB
+void bl_mempool_get_stats (int& mp_min, int& mp_max, int& mp_tot) // min, max & tot in MB
 {
   size_t hsu_min=std::numeric_limits<size_t>::max();
   size_t hsu_max=0;
@@ -123,12 +100,12 @@ void amrex_mempool_get_stats (int& mp_min, int& mp_max, int& mp_tot) // min, max
 
 // We should eventually use Real instead of double.
 // We cannot do it now because of F_BaseLib.
-void amrex_real_array_init (double* p, size_t nelems)
+void bl_real_array_init (double* p, size_t nelems)
 {
-    if (init_snan) amrex_array_init_snan(p, nelems);
+    if (init_snan) bl_array_init_snan(p, nelems);
 }
 
-void amrex_array_init_snan (double* p, size_t nelems)
+void bl_array_init_snan (double* p, size_t nelems)
 {
 #ifdef UINT64_MAX
     const uint64_t snan = UINT64_C(0x7ff0000080000001);

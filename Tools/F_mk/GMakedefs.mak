@@ -89,9 +89,6 @@ else
   CPPFLAGS += -DBL_$(ARCH)
 endif
 
-CPPFLAGS += -DFORTRAN_BOXLIB -DAMREX_FORTRAN_BOXLIB
-FPPFLAGS += -DFORTRAN_BOXLIB -DAMREX_FORTRAN_BOXLIB
-
 ifdef TEST
   CPPFLAGS += -DBL_TESTING
 endif
@@ -118,28 +115,27 @@ tdir=.
 tdir = t/$(suf)
 odir = $(tdir)/o
 mdir = $(tdir)/m
-hdir = t/html
 
 
 ifeq ($(COMP),g95)
-  include $(AMREX_HOME)/Tools/F_mk/comps/g95.mak
+  include $(FBOXLIB_HOME)/Tools/F_mk/comps/g95.mak
 endif
 
 ifeq ($(findstring gfortran, $(COMP)), gfortran)
-  include $(AMREX_HOME)/Tools/F_mk/comps/gfortran.mak
+  include $(FBOXLIB_HOME)/Tools/F_mk/comps/gfortran.mak
 endif
 
 ifeq ($(COMP),xlf)
-  include $(AMREX_HOME)/Tools/F_mk/comps/xlf.mak
+  include $(FBOXLIB_HOME)/Tools/F_mk/comps/xlf.mak
 endif
 
 ifeq ($(ARCH),Darwin)
   ifeq ($(COMP),IBM)
-    include $(AMREX_HOME)/Tools/F_mk/comps/Darwin_ibm.mak
+    include $(FBOXLIB_HOME)/Tools/F_mk/comps/Darwin_ibm.mak
   endif
 
   ifeq ($(COMP),Intel)
-    include $(AMREX_HOME)/Tools/F_mk/comps/Darwin_intel.mak
+    include $(FBOXLIB_HOME)/Tools/F_mk/comps/Darwin_intel.mak
   endif
 endif
 
@@ -148,36 +144,36 @@ endif
 
 ifeq ($(ARCH),Linux)
   ifeq ($(COMP),Cray)
-    include $(AMREX_HOME)/Tools/F_mk/comps/Linux_cray.mak
+    include $(FBOXLIB_HOME)/Tools/F_mk/comps/Linux_cray.mak
   endif
 
   ifeq ($(COMP),PGI)
-    include $(AMREX_HOME)/Tools/F_mk/comps/Linux_pgi.mak
+    include $(FBOXLIB_HOME)/Tools/F_mk/comps/Linux_pgi.mak
   endif
 
   ifeq ($(COMP),SunStudio)
-    include $(AMREX_HOME)/Tools/F_mk/comps/Linux_sunstudio.mak
+    include $(FBOXLIB_HOME)/Tools/F_mk/comps/Linux_sunstudio.mak
   endif
 
   ifeq ($(COMP),PathScale)
-    include $(AMREX_HOME)/Tools/F_mk/comps/Linux_pathscale.mak
+    include $(FBOXLIB_HOME)/Tools/F_mk/comps/Linux_pathscale.mak
   endif
 
   ifeq ($(COMP),Intel)
-    include $(AMREX_HOME)/Tools/F_mk/comps/Linux_intel.mak
+    include $(FBOXLIB_HOME)/Tools/F_mk/comps/Linux_intel.mak
   endif
 
   # Gottingen machines
   ifeq ($(HOST),hicegate0)
-    include $(AMREX_HOME)/Tools/F_mk/comps/Linux_intel.mak
+    include $(FBOXLIB_HOME)/Tools/F_mk/comps/Linux_intel.mak
   endif
 
   ifeq ($(COMP),NAG)
-    include $(AMREX_HOME)/Tools/F_mk/comps/Linux_nag.mak
+    include $(FBOXLIB_HOME)/Tools/F_mk/comps/Linux_nag.mak
   endif
 
   ifeq ($(COMP),Lahey)
-    include $(AMREX_HOME)/Tools/F_mk/comps/Linux_lahey.mak
+    include $(FBOXLIB_HOME)/Tools/F_mk/comps/Linux_lahey.mak
   endif
 
   ifeq ($(findstring summitdev, $(HOST)), summitdev)
@@ -186,11 +182,11 @@ ifeq ($(ARCH),Linux)
 endif
 
 ifeq ($(ARCH),AIX)
-  include $(AMREX_HOME)/Tools/F_mk/comps/aix.mak
+  include $(FBOXLIB_HOME)/Tools/F_mk/comps/aix.mak
 endif
 
 ifeq ($(findstring mira, $(HOSTNAMEF)), mira)
-  include $(AMREX_HOME)/Tools/F_mk/comps/bgq.mak
+  include $(FBOXLIB_HOME)/Tools/F_mk/comps/bgq.mak
 endif
 
 ifeq ($(strip $(F90)),)
@@ -204,7 +200,7 @@ endif
 endif
 
 ifdef MPI
-  include $(AMREX_HOME)/Tools/F_mk/GMakeMPI.mak
+  include $(FBOXLIB_HOME)/Tools/F_mk/GMakeMPI.mak
 endif
 
 ifdef mpi_include_dir
@@ -220,9 +216,8 @@ c_includes = $(addprefix -I , $(INCLUDE_LOCATIONS))
 
 # MODDEP is for .f90, .f, and .F90.  
 # MKDEP is for c
-MODDEP  :=  $(AMREX_HOME)/Tools/F_scripts/dep.py
-MKDEP   :=  $(AMREX_HOME)/Tools/F_scripts/mkdep.pl
-F90DOC  :=  $(AMREX_HOME)/Tools/F_scripts/f90doc/f90doc
+MODDEP  :=  $(FBOXLIB_HOME)/Tools/F_scripts/dep.py
+MKDEP   :=  $(FBOXLIB_HOME)/Tools/F_scripts/mkdep.pl
 
 FPPFLAGS += $(fpp_flags) $(addprefix -I, $(FINCLUDE_LOCATIONS))
 LDFLAGS  += $(fld_flags)
@@ -244,12 +239,6 @@ sources =                     \
 	$(sort $(fsources)  ) \
 	$(sort $(csources)  ) \
 	$(sort $(cxxsources)  )
-
-html_sources = $(addprefix $(hdir)/,     \
-	$(sort $(f90sources:.f90=.html)) \
-	$(sort $(F90sources:.F90=.html)) \
-	$(sort $(fsources:.f=.html))     \
-	)
 
 pnames = $(addsuffix .$(suf).exe, $(basename $(programs)))
 

@@ -2,10 +2,9 @@
 #include <utility>
 #include <cstring>
 
-#include <AMReX_CArena.H>
-#include <AMReX_BLassert.H>
+#include <BL_CArena.H>
 
-namespace amrex {
+namespace bl {
 
 CArena::CArena (size_t hunk_size)
 {
@@ -14,9 +13,6 @@ CArena::CArena (size_t hunk_size)
     //
     m_hunk = Arena::align(hunk_size == 0 ? DefaultHunkSize : hunk_size);
     m_used = 0;
-
-    BL_ASSERT(m_hunk >= hunk_size);
-    BL_ASSERT(m_hunk%Arena::align_size == 0);
 }
 
 CArena::~CArena ()
@@ -64,9 +60,6 @@ CArena::alloc (size_t nbytes)
     }
     else
     {
-        BL_ASSERT((*free_it).size() >= nbytes);
-        BL_ASSERT(m_busylist.find(*free_it) == m_busylist.end());
-
         vp = (*free_it).block();
 
         if ((*free_it).size() > nbytes)
@@ -90,8 +83,6 @@ CArena::alloc (size_t nbytes)
 
     m_busylist.insert(Node(vp, nbytes));
 
-    BL_ASSERT(!(vp == 0));
-
     return vp;
 }
 
@@ -108,18 +99,13 @@ CArena::free (void* vp)
     //
     NL::iterator busy_it = m_busylist.find(Node(vp,0));
 
-    BL_ASSERT(!(busy_it == m_busylist.end()));
-    BL_ASSERT(m_freelist.find(*busy_it) == m_freelist.end());
     //
     // Put free'd block on free list and save iterator to insert()ed position.
     //
     std::pair<NL::iterator,bool> pair_it = m_freelist.insert(*busy_it);
 
-    BL_ASSERT(pair_it.second == true);
-
     NL::iterator free_it = pair_it.first;
 
-    BL_ASSERT(free_it != m_freelist.end() && (*free_it).block() == (*busy_it).block());
     //
     // And remove from busy list.
     //
@@ -149,7 +135,6 @@ CArena::free (void* vp)
             // back into the same place in the set.
             //
             Node* node = const_cast<Node*>(&(*lo_it));
-            BL_ASSERT(!(node == 0));
             node->size((*lo_it).size() + (*free_it).size());
             m_freelist.erase(free_it);
             free_it = lo_it;
@@ -166,7 +151,6 @@ CArena::free (void* vp)
         // Ditto the above comment.
         //
         Node* node = const_cast<Node*>(&(*free_it));
-        BL_ASSERT(!(node == 0));
         node->size((*free_it).size() + (*hi_it).size());
         m_freelist.erase(hi_it);
     }
