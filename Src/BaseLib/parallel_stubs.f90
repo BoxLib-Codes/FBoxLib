@@ -1998,3 +1998,11 @@ contains
   end function parallel_tag
 
 end module parallel
+
+
+module amrex_paralleldescriptor_module
+  use parallel, only : amrex_pd_myproc        => parallel_myproc, &
+       &               amrex_pd_nprocs        => parallel_nprocs, &
+       &               amrex_pd_ioprocessor   => parallel_ioprocessor, &
+       &               amrex_pd_bcast         => parallel_bcast
+end module amrex_paralleldescriptor_module
