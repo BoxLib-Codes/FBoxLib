@@ -223,7 +223,7 @@ FPPFLAGS += $(fpp_flags) $(addprefix -I, $(FINCLUDE_LOCATIONS))
 LDFLAGS  += $(fld_flags)
 libraries += $(hypre_libraries) $(mpi_libraries) $(xtr_libraries)
 
-CPPFLAGS += -DBL_FORT_USE_$(F_C_LINK) $(addprefix -I, $(INCLUDE_LOCATIONS))
+CPPFLAGS += -DBL_FORT_USE_$(F_C_LINK) -DFORTRAN_BOXLIB $(addprefix -I, $(INCLUDE_LOCATIONS))
 
 objects = $(addprefix $(odir)/,       \
 	$(sort $(f90sources:.f90=.o)) \
