@@ -92,3 +92,9 @@ contains
   end function int8_supported
 
 end module bl_types
+
+
+module amrex_fort_module
+  use bl_types, only : amrex_real => dp_t
+  implicit none
+end module amrex_fort_module

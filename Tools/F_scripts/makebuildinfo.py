@@ -17,8 +17,8 @@ module build_info_module
   character (len=128), save :: build_machine = &
 "@@BUILD_MACHINE@@"
 
-  character (len=128), save :: amrex_dir = &
-"@@AMREX_DIR@@"
+  character (len=128), save :: fboxlib_dir = &
+"@@FBOXLIB_DIR@@"
 
   character (len=128), save :: FCOMP = &
 "@@FCOMP@@"
@@ -39,8 +39,8 @@ module build_info_module
 @@LINK_LINE@@
 
 
-  character (len=128), save :: amrex_git_hash = &
-"@@AMREX_HASH@@"
+  character (len=128), save :: fboxlib_git_hash = &
+"@@FBOXLIB_HASH@@"
 
   character (len=128), save :: source_git_hash = &
 "@@SOURCE_HASH@@"
@@ -101,7 +101,7 @@ def get_git_hash(d):
 
 
 usage = """
-This script is intended to be used within a F90 AMReX makefile to create
+This script is intended to be used within a FBoxLib makefile to create
 a file called build_info.f90 with information about the build environment.
 """
 
@@ -131,9 +131,9 @@ def doit():
     parser.add_argument("--link_line", default="",
                         metavar="link-invocation",
                         help="the link invocation used to link the application, including all options")
-    parser.add_argument("--amrex_home", default="",
-                        metavar="/path/to/AMReX",
-                        help="the full path to the main amrex/ directory")
+    parser.add_argument("--fboxlib_home", default="",
+                        metavar="/path/to/FBoxLib",
+                        help="the full path to the main FBoxLib/ directory")
     parser.add_argument("--source_home", default="",
                         metavar="/path/to/source",
                         help="the full path to the main application source directory")
@@ -168,7 +168,7 @@ def doit():
     # git hashes
     running_dir = os.getcwd()
 
-    amrex_hash = get_git_hash(args.amrex_home)
+    fboxlib_hash = get_git_hash(args.fboxlib_home)
     source_hash = get_git_hash(args.source_home)
 
     if not args.extra_home == "":
@@ -235,9 +235,9 @@ def doit():
                                        build_machine[:MAX_STR_LEN])
                 fout.write(newline)
 
-            elif keyword == "AMREX_DIR":
-                newline = line.replace("@@AMREX_DIR@@",
-                                       args.amrex_home[:MAX_STR_LEN])
+            elif keyword == "FBOXLIB_DIR":
+                newline = line.replace("@@FBOXLIB_DIR@@",
+                                       args.fboxlib_home[:MAX_STR_LEN])
                 fout.write(newline)
 
             elif keyword == "FCOMP":
@@ -297,8 +297,8 @@ def doit():
                                        "\"%s\"" % (tstr))
                 fout.write(newline)
 
-            elif keyword == "AMREX_HASH":
-                newline = line.replace("@@AMREX_HASH@@", amrex_hash)
+            elif keyword == "FBOXLIB_HASH":
+                newline = line.replace("@@FBOXLIB_HASH@@", fboxlib_hash)
                 fout.write(newline)
 
             elif keyword == "SOURCE_HASH":

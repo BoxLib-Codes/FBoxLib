@@ -191,3 +191,9 @@ contains
   end subroutine bl_assert_v
 
 end module bl_error_module
+
+
+module amrex_error_module
+  use bl_error_module, only : amrex_error => bl_error
+  implicit none
+end module amrex_error_module

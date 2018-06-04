@@ -57,3 +57,9 @@ module bl_constants_module
        1.414213562373095048801688724209698078570_bl_real
 
 end module bl_constants_module
+
+
+module amrex_constants_module
+  use bl_constants_module
+  implicit none
+end module amrex_constants_module
