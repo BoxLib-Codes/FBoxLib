@@ -388,11 +388,11 @@ def write_probin(probin_template, param_A_files, param_B_files,
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', type=str, help='probin_template')
-    parser.add_argument('-o', type=str, help='out_file')
-    parser.add_argument('-n', type=str, help='namelist_name')
-    parser.add_argument('--pa', type=str, help='param_A_files_str')
-    parser.add_argument('--pb', type=str, help='param_B_files_str')
+    parser.add_argument('-t', type=str, default="", help='probin_template')
+    parser.add_argument('-o', type=str, default="", help='out_file')
+    parser.add_argument('-n', type=str, default="", help='namelist_name')
+    parser.add_argument('--pa', type=str, default="", help='param_A_files_str')
+    parser.add_argument('--pb', type=str, default="", help='param_B_files_str')
     parser.add_argument('--managed', action='store_true',
                         help='If supplied, use CUDA managed memory for probin variables.')
     
