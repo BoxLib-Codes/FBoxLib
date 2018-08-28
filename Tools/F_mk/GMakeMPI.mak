@@ -10,8 +10,7 @@ CCSE_MACHINES += megalon mothra rodan varan
 # CCSE's naphta orga are not included in CCSE_MACHINES
 
 ifeq ($(HOST), $(findstring $(HOST), $(CCSE_MACHINES)))
-    mpi_include_dir = /usr/include/mpich
-    mpi_libraries += -lmpich -lmpichf90
+    include $(FBOXLIB_HOME)/Tools/F_mk/Make.mpi.ccse
 endif
 
 DEFAULT_MACHINES := artoo naphta orga posse rob

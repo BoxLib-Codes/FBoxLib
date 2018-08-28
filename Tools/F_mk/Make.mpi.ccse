@@ -1,0 +1,52 @@
+
+
+  F90 = mpif90
+  CXX = mpicxx
+
+  # Link to MPI f90 library.
+  ifneq ($(findstring mpich,$(shell $(F90) -show 2>&1 | tr A-Z a-z)),)
+
+    #
+    # mpich
+    #
+
+    mpif90_link_flags := $(shell $(F90) -link_info)
+    #
+    # The first word is the underlying compiler say gfortran
+    #
+    mpi_libraries += $(wordlist 2,1024,$(mpif90_link_flags))
+
+  else ifneq ($(findstring mvapich,$(shell $(F90) -show 2>&1 | tr A-Z a-z)),)
+
+    #
+    # mvapich
+    #
+
+    mpif90_link_flags := $(shell $(F90) -link_info)
+    #
+    # The first word is the underlying compiler say gfortran
+    #
+    mpi_libraries += $(wordlist 2,1024,$(mpif90_link_flags))
+
+  else ifneq ($(findstring Open MPI, $(shell $(F90) -showme:version 2>&1)),)
+
+    #
+    # openmpi
+    #
+    mpif90_link_flags := $(shell $(F90) -showme:link)
+    mpi_libraries += $(mpif90_link_flags)
+
+  else ifneq ($(findstring Spectrum MPI, $(shell $(F90) -showme:version 2>&1)),1)
+
+    #
+    # Spectrum MPI
+    #
+    mpif90_link_flags := $(shell $(F90) -showme:link)
+    mpi_libraries += $(mpif90_link_flags)
+
+  else
+
+    $(error Unknown mpi implementation.  You can try setting MPI stuff in amrex/Tools/GNUMake/Make.local and then compile with NO_MPI_CHECKING=TRUE.)
+
+  endif
+
