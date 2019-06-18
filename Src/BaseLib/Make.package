@@ -1,0 +1,116 @@
+f90EXE_sources += boxlib_f.f90
+f90EXE_sources += f2kcli$(f2kcli_suf).f90
+
+f90EXE_sources += BLProfiler_f90.f90
+
+f90EXE_sources += bl_constants.f90
+f90EXE_sources += bl_IO.f90
+ifdef PROF
+  f90EXE_sources += bl_prof.f90
+else
+  f90EXE_sources += bl_prof_stubs.f90
+endif
+f90EXE_sources += bl_error.f90
+f90EXE_sources += bl_mem_stat.f90
+f90EXE_sources += bl_parmparse.f90
+f90EXE_sources += bl_space.f90
+f90EXE_sources += bl_stream.f90
+f90EXE_sources += bl_string.f90
+f90EXE_sources += bl_system.f90
+f90EXE_sources += bl_timer.f90
+f90EXE_sources += bl_timer_c.f90
+f90EXE_sources += bl_types.f90
+
+f90EXE_sources += box_f.f90
+f90EXE_sources += knapsack.f90
+f90EXE_sources += layout.f90
+f90EXE_sources += boxarray_f.f90
+f90EXE_sources += box_util.f90
+f90EXE_sources += fab.f90
+f90EXE_sources += multifab_f.f90
+f90EXE_sources += fabio.f90
+f90EXE_sources += bl_fabio_c.f90
+f90EXE_sources += plotfile.f90
+f90EXE_sources += filler.f90
+f90EXE_sources += cluster_f.f90
+f90EXE_sources += interp.f90
+f90EXE_sources += fourth_order_interp_coeffs.f90
+f90EXE_sources += bc.f90
+f90EXE_sources += bc_functions.f90
+f90EXE_sources += bndry_reg.f90
+
+f90EXE_sources += ml_boxarray.f90
+f90EXE_sources += ml_layout.f90
+f90EXE_sources += ml_multifab.f90
+f90EXE_sources += ml_restrict_fill.f90
+
+f90EXE_sources +=    cc_restriction.f90
+f90EXE_sources += nodal_restriction.f90
+f90EXE_sources += ml_cc_restriction.f90
+f90EXE_sources += ml_nd_restriction.f90
+f90EXE_sources += nodal_neumann_bcs.f90
+f90EXE_sources += nodal_stencil_bc.f90
+
+f90EXE_sources += create_umac_grown.f90
+f90EXE_sources += define_bc_tower.f90
+f90EXE_sources += fillpatch.f90
+f90EXE_sources += multifab_fill_ghost_cells.f90
+f90EXE_sources += multifab_physbc_edgevel.f90
+f90EXE_sources += multifab_physbc.f90
+
+f90EXE_sources += list_box.f90
+f90EXE_sources += sort_box.f90
+f90EXE_sources += vector_i.f90
+f90EXE_sources += sort_d.f90
+f90EXE_sources += sort_i.f90
+
+f90EXE_sources += ppm_util.f90
+
+f90EXE_sources += cutcells.f90
+
+f90EXE_sources += regrid.f90
+f90EXE_sources += make_new_grids.f90
+f90EXE_sources += tag_boxes.f90
+
+ifdef PARTICLES
+  f90EXE_sources += particles_f.f90
+endif
+
+ifndef MPI
+  f90EXE_sources += parallel_stubs.f90
+else
+  f90EXE_sources += parallel.f90
+endif
+
+ifdef OMP
+  f90EXE_sources += omp.f90
+else
+  f90EXE_sources += omp_stubs.f90
+endif
+
+cEXE_sources += fabio_c.c
+cEXE_sources += timer_c.c
+cEXE_sources += ppm_util_c.c
+cEXE_sources += system_util_c.c
+
+ifdef RANDOM
+  f90EXE_sources += mt19937ar.f90
+endif
+
+f90EXE_sources += backtrace_f.f90
+CEXE_sources += backtrace_c.cpp
+
+f90EXE_sources += bl_random_f.f90
+CEXE_sources += bl_random_c.cpp
+
+f90EXE_sources += bl_fort_mod.f90
+
+CEXE_sources += BL_MemPool.cpp
+CEXE_sources += BL_CArena.cpp
+CEXE_sources += BL_Arena.cpp
+
+f90EXE_sources += bl_mempool_f.f90
+
+VPATH_LOCATIONS += $(FBOXLIB_HOME)/Src/BaseLib
+INCLUDE_LOCATIONS += $(FBOXLIB_HOME)/Src/BaseLib
+
