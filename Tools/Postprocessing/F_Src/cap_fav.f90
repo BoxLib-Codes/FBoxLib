@@ -599,7 +599,7 @@ program faverage
 !       (trim(pf%names(icomps_pass(j))), &
 !       trim(pf%names(icomps_pass(j))), j = 1, nvars_pass)
 
-  write(uout,*) 0, wallpot
+  write(uout,*) 0, wallpot, 0
   
   do i = flo(idir), fhi(idir)
      write(uout,trim(data_format)) pf%plo(idir) + (i+HALF)*dx(idir), &
