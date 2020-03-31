@@ -6,7 +6,7 @@ endif
 
 CCSE_MACHINES := angilas atragon baragon battra ebirah gamera gigan
 CCSE_MACHINES += gimantis godzilla gojira hedorah kiryu kumonga manda
-CCSE_MACHINES += megalon mothra rodan varan minilla winkle
+CCSE_MACHINES += megalon mothra rodan varan minilla winkle ghidorah
 # CCSE's naphta orga are not included in CCSE_MACHINES
 
 ifeq ($(HOST), $(findstring $(HOST), $(CCSE_MACHINES)))
