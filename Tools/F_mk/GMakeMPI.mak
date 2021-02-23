@@ -4,9 +4,10 @@ ifndef MPI
 $(error THIS FILE SHOULD ONLY BE LOADED WITH MPI defined)
 endif
 
-CCSE_MACHINES := angilas atragon baragon battra ebirah gamera gigan
-CCSE_MACHINES += gimantis godzilla gojira hedorah kiryu kumonga manda
-CCSE_MACHINES += megalon mothra rodan varan minilla winkle ghidorah
+CCSE_MACHINES := angilas anguirus atragon baragon battra biollante dogora ebirah gabara
+CCSE_MACHINES += gaira gamera garuda ghidorah gigan
+CCSE_MACHINES += gimantis godzilla gojira hedorah kamacuras kiryu kong kraken kumonga manda
+CCSE_MACHINES += megalon moguera mothra muto naphta orga rodan tindalos varan minilla winkle zilla
 # CCSE's naphta orga are not included in CCSE_MACHINES
 
 ifeq ($(HOST), $(findstring $(HOST), $(CCSE_MACHINES)))
