@@ -205,29 +205,12 @@ ifeq ($(HOST),cfe3)
 endif
 
 
-ifeq ($(findstring donev, $(HOSTNAME)), donev)
-   ifeq ($(MPIVENDOR),OpenMPIv1)
-      MPIHOME=/usr/lib64/compat-openmpi
-      mpi_include_dir = /usr/include/compat-openmpi-x86_64
-      mpi_libraries += -lmpi -lmpi_f77 #-lmpi_f90
-      mpi_lib_dir = $(MPIHOME)/lib
-   else ifeq ($(MPIVENDOR),OpenMPI) # Latest version
-      MPIHOME=$(HOME)/HPC/Libraries/OMPI
-      mpi_libraries += -lmpi -lmpi_mpifh # -lmpi -lmpi_f77 #-lmpi_f90
-      mpi_include_dir = $(MPIHOME)/include
-      mpi_lib_dir = $(MPIHOME)/lib
-   else
-      MPIHOME=$(HOME)/HPC/Libraries/MPI
-      mpi_libraries += -lmpich -lmpichf90 -lpthread
-      mpi_include_dir = $(MPIHOME)/include
-      mpi_lib_dir = $(MPIHOME)/lib
-   endif
-else ifeq ($(findstring cims.nyu.edu, $(HOSTNAME)), cims.nyu.edu)
-   # OpenMPI v2
-   MPIHOME=/usr/lib64/openmpi
-   mpi_include_dir = /usr/include/openmpi-x86_64
+ifeq ($(findstring cims.nyu.edu, $(HOSTNAME)), cims.nyu.edu)
+   # OpenMPI v4
+   MPIHOME=/usr/local/stow/openmpi-4.0
+   mpi_include_dir = $(MPIHOME)/include
    mpi_libraries += -lmpi -lmpi_mpifh
-   # OpenMPI v1
+   # OpenMPI v1 -- not up to date!
    #MPIHOME=/usr/lib64/compat-openmpi
    #mpi_include_dir = /usr/include/compat-openmpi-x86_64
    #mpi_libraries += -lmpi -lmpi_f77 #-lmpi_f90
