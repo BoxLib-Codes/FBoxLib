@@ -12,7 +12,8 @@
     else ifeq ($(findstring Version 13, $(_ifc_version)), Version 13)
         _comp := Intel13
     else
-      $(error "$(_ifc_version) of IFC is not supported")
+        _comp := IntelOneAPI
+        #$(error "$(_ifc_version) of IFC is not supported")
     endif
 
     F90 := ifort
@@ -50,7 +51,7 @@
 
 #ifeq ($(GCC_MINOR),$(filter $(GCC_MINOR),4 5))
 
-    ifeq ($(_comp),$(filter $(_comp),Intel17 Intel18))
+    ifeq ($(_comp),$(filter $(_comp),Intel17 Intel18 IntelOneAPI))
       ifndef NDEBUG
         F90FLAGS += -g -traceback -O0 -fpe0 #-check all -warn all -u
         FFLAGS   += -g -traceback -O0 -fpe0 #-check all -warn all -u
