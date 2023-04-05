@@ -204,18 +204,32 @@ ifeq ($(HOST),cfe3)
   mpi_libraries += -lmpi
 endif
 
-
 ifeq ($(findstring cims.nyu.edu, $(HOSTNAME)), cims.nyu.edu)
-   # OpenMPI v4
-   MPIHOME=/usr/local/stow/openmpi-4.0
+   # Courant machines require "module load" statements for gcc and MPI
+   # Check the latest list with "module avail" and then update here
+   
+   # OpenMPI v4.1, compiled with gcc 11.2
+   MPIHOME=/usr/local/stow/openmpi-4.1
    mpi_include_dir = $(MPIHOME)/include
    mpi_libraries += -lmpi -lmpi_mpifh
-   # OpenMPI v1 -- not up to date!
-   #MPIHOME=/usr/lib64/compat-openmpi
-   #mpi_include_dir = /usr/include/compat-openmpi-x86_64
-   #mpi_libraries += -lmpi -lmpi_f77 #-lmpi_f90
+
    # Generic stuff:
    mpi_lib_dir = $(MPIHOME)/lib
+   
+   # Intel MPI libs:
+   # Make sure to run /opt/pkg/intel/oneapi/setvars.sh
+   # exports variables:
+   # ${MKLROOT}
+   # I_MPI_ROOT for Intel MPI
+   # /opt/pkg/intel/oneapi/mpi/latest/lib/libmpifort.so
+   # LIBRARY_PATH for MKL, including LAPACK95 and BLAS95
+   # /opt/pkg/intel/oneapi/mkl/latest/lib/intel64/libmkl_blas95_ilp64.a
+   
+else ($(findstring pop-os, $(HOSTNAME)), pop-os)
+   # OpenMPI v4
+   MPIHOME=/usr/lib/x86_64-linux-gnu/openmpi
+   mpi_include_dir = $(MPIHOME)/include
+   mpi_libraries += -lmpi -lmpi_mpifh
 endif
 
 ifeq ($(HOST),greenstreet)

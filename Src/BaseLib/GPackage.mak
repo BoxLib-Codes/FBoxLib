@@ -80,6 +80,9 @@ ifndef MPI
   f90sources += parallel_stubs.f90
 else
   f90sources += parallel.f90
+  ifeq ($(findstring gfortran, $(FC)), gfortran)
+     F90FLAGS += --std=legacy
+  endif
 endif
 
 ifdef OMP
