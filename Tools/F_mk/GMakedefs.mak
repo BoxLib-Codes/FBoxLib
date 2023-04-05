@@ -1,5 +1,6 @@
 ARCH := $(shell uname)
 UNAMEN := $(shell uname -n)
+HOSTNAME := $(shell hostname)
 HOSTNAMEF := $(shell hostname -f)
 
 ifndef HOST
