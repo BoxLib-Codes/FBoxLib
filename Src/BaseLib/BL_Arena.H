@@ -2,6 +2,7 @@
 #ifndef BL_ARENA_H
 #define BL_ARENA_H
 
+// A. Donev: As of April 2023 this does not work with Intel's C++ OneAPI compiler
 #include <cstddef>
 
 namespace bl {

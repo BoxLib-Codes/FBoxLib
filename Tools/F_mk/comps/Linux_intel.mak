@@ -23,8 +23,13 @@
         # Use the new LVM based compiler suite
         F90 := ifx
         FC  := ifx
-        CC  := icx
-        CXX := icpx        
+        # For some reason, as of 2023.1 release, we have to use icc to get cstddef.h
+        # To disable annoying messages about icc being deprecated, add extra flag
+        CXXFLAG_bug += -diag-disable=10441
+        CC  := icc
+        CXX := icpc        
+        #CC  := icx
+        #CXX := icpx        
     else    
         $(error "$(_ifc_version) of IFC is not supported")
     endif
@@ -59,17 +64,18 @@
 
 #ifeq ($(GCC_MINOR),$(filter $(GCC_MINOR),4 5))
 
-    ifeq ($(_comp),$(filter $(_comp),IntelOneAPI)) # A. Donev added this
+    ifeq ($(_comp),$(filter $(_comp),IntelOneAPI)) # A. Donev added this     
       ifndef NDEBUG
         F90FLAGS += -g -traceback -O0 -fpe0 #-check all -warn all -u
         FFLAGS   += -g -traceback -O0 -fpe0 #-check all -warn all -u
-        CFLAGS   += -g -fp-trap=common #-Wcheck
-        CXXFLAGS += -g -fp-trap=common #-Wcheck
+        # For some reason, as of 2023.1 release, we have to use icc to get cstddef.h
+        CFLAGS   += -g -fp-trap=common $(CXXFLAG_bug) #-Wcheck
+        CXXFLAGS += -g -fp-trap=common $(CXXFLAG_bug) #-Wcheck
       else
         F90FLAGS += -g -debug inline-debug-info -O2 -align array64byte -qopt-report=3
         FFLAGS   += -g -debug inline-debug-info -O2 -align array64byte -qopt-report=3
-        CFLAGS   += -g -debug inline-debug-info -O2 -qopt-report=3
-        CXXFLAGS += -g -debug inline-debug-info -O2 -qopt-report=3
+        CFLAGS   += -g -debug inline-debug-info -O2 -qopt-report=3 $(CXXFLAG_bug)
+        CXXFLAGS += -g -debug inline-debug-info -O2 -qopt-report=3 $(CXXFLAG_bug)
       endif
     else ifeq ($(_comp),$(filter $(_comp),Intel17 Intel18 IntelOneAPI))
       ifndef NDEBUG
