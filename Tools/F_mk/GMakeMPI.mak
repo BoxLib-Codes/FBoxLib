@@ -205,17 +205,18 @@ ifeq ($(HOST),cfe3)
 endif
 
 ifeq ($(findstring cims.nyu.edu, $(HOSTNAME)), cims.nyu.edu)
-# Courant machines require "module load" statements for gcc and MPI
-# Check the latest list with "module avail" and then update here
+   # Courant machines require "module load" statements for gcc and MPI
+   # Check the latest list with "module avail" and then update here
+   
    #ifeq ($(findstring ifort, $(FC)), ifort)
+   #Compiler-specific MPI stuff
+   #endif
    # Intel MPI libs:
    # Make sure to source /opt/pkg/intel/oneapi/setvars.sh
    # or run "module load intel-oneapi"
-   # exports variables $(MKLROOT) for MKL and
-   # $(I_MPI_ROOT) for Intel MPI but we don't rely on that
-   # /opt/pkg/intel/oneapi/mpi/latest/lib/libmpifort.so
+   # This exports variable $(I_MPI_ROOT)
    ifdef I_MPI_ROOT
-      MPIHOME=$(I_MPI_ROOT)/mpi/latest
+      MPIHOME=$(I_MPI_ROOT)
       mpi_libraries += -lmpifort -lmpicxx
    else
       # OpenMPI v4.1, compiled with gcc 11.2
@@ -230,7 +231,7 @@ ifeq ($(findstring cims.nyu.edu, $(HOSTNAME)), cims.nyu.edu)
 else ifeq ($(findstring pop-os, $(HOSTNAME)), pop-os)
 
    ifdef I_MPI_ROOT
-      MPIHOME=$(I_MPI_ROOT)/mpi/latest
+      MPIHOME=$(I_MPI_ROOT)
       mpi_libraries += -lmpifort -lmpicxx
    else
       # OpenMPI v4.1, compiled with gcc 11.2
