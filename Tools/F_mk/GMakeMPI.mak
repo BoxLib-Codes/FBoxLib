@@ -228,14 +228,15 @@ ifeq ($(findstring cims.nyu.edu, $(HOSTNAME)), cims.nyu.edu)
    mpi_include_dir = $(MPIHOME)/include
    mpi_lib_dir = $(MPIHOME)/lib       
 
-else ifeq ($(findstring pop-os, $(HOSTNAME)), pop-os)
+else ifeq ($(findstring pop-os, $(HOSTNAME)), pop-os) 
+   # A. Donev pop-os system76 laptop
 
    ifdef I_MPI_ROOT
       MPIHOME=$(I_MPI_ROOT)
       mpi_libraries += -lmpifort -lmpicxx
    else
-      # OpenMPI v4.1, compiled with gcc 11.2
-      MPIHOME=/usr/local/stow/openmpi-4.1
+      # OpenMPI on ubuntu:
+      MPIHOME=/usr/lib/x86_64-linux-gnu/openmpi
       mpi_libraries += -lmpi -lmpi_mpifh
    endif   
 
@@ -244,7 +245,7 @@ else ifeq ($(findstring pop-os, $(HOSTNAME)), pop-os)
    mpi_lib_dir = $(MPIHOME)/lib       
 
 else 
-   # OpenMPI v4 on ubuntu pop-os
+   # OpenMPI on ubuntu
    MPIHOME=/usr/lib/x86_64-linux-gnu/openmpi
    mpi_libraries += -lmpi -lmpi_mpifh
 
