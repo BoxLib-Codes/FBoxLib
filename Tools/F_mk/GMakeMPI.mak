@@ -207,30 +207,48 @@ endif
 ifeq ($(findstring cims.nyu.edu, $(HOSTNAME)), cims.nyu.edu)
 # Courant machines require "module load" statements for gcc and MPI
 # Check the latest list with "module avail" and then update here
-   ifeq ($(findstring ifort, $(FC)), ifort)
+   #ifeq ($(findstring ifort, $(FC)), ifort)
    # Intel MPI libs:
    # Make sure to source /opt/pkg/intel/oneapi/setvars.sh
    # or run "module load intel-oneapi"
    # exports variables $(MKLROOT) for MKL and
    # $(I_MPI_ROOT) for Intel MPI but we don't rely on that
    # /opt/pkg/intel/oneapi/mpi/latest/lib/libmpifort.so
-   MPIHOME=/opt/pkg/intel/oneapi/mpi/latest/lib
-   mpi_libraries += -llibmpifort -lmpicxx
+   ifdef I_MPI_ROOT
+      MPIHOME=$(I_MPI_ROOT)/mpi/latest
+      mpi_libraries += -lmpifort -lmpicxx
    else
-   # OpenMPI v4.1, compiled with gcc 11.2
-   MPIHOME=/usr/local/stow/openmpi-4.1
-   mpi_libraries += -lmpi -lmpi_mpifh
+      # OpenMPI v4.1, compiled with gcc 11.2
+      MPIHOME=/usr/local/stow/openmpi-4.1
+      mpi_libraries += -lmpi -lmpi_mpifh
    endif   
 
    # Generic stuff:
    mpi_include_dir = $(MPIHOME)/include
    mpi_lib_dir = $(MPIHOME)/lib       
-   
+
 else ifeq ($(findstring pop-os, $(HOSTNAME)), pop-os)
+
+   ifdef I_MPI_ROOT
+      MPIHOME=$(I_MPI_ROOT)/mpi/latest
+      mpi_libraries += -lmpifort -lmpicxx
+   else
+      # OpenMPI v4.1, compiled with gcc 11.2
+      MPIHOME=/usr/local/stow/openmpi-4.1
+      mpi_libraries += -lmpi -lmpi_mpifh
+   endif   
+
+   # Generic stuff:
+   mpi_include_dir = $(MPIHOME)/include
+   mpi_lib_dir = $(MPIHOME)/lib       
+
+else 
    # OpenMPI v4 on ubuntu pop-os
    MPIHOME=/usr/lib/x86_64-linux-gnu/openmpi
-   mpi_include_dir = $(MPIHOME)/include
    mpi_libraries += -lmpi -lmpi_mpifh
+
+   mpi_include_dir = $(MPIHOME)/include
+   mpi_lib_dir = $(MPIHOME)/lib       
 endif
 
 ifeq ($(HOST),greenstreet)
