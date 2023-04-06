@@ -1,5 +1,6 @@
 ARCH := $(shell uname)
 UNAMEN := $(shell uname -n)
+# A. Donev added HOSTNAME since for some reason on his laptop that was not defined
 HOSTNAME := $(shell hostname)
 HOSTNAMEF := $(shell hostname -f)
 
